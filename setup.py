@@ -20,5 +20,5 @@ setup(
     long_description_content_type="text/markdown",
     author="Rana Awais",
     author_email="rana.awais@ebryx.com",
-    requires=['cryptography']
+    install_requires=['cryptography']
 )
