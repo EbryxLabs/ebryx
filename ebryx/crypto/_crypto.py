@@ -54,13 +54,24 @@ def adjust_padding(data, block_size, unpad=False):
     return data.decode('utf8')
 
 
-def encrypt_file(params):
+def encrypt_file(filename, new_keys=False):
+    '''
+    encrypts file.
 
-    filename = params.file
+    params
+    ------
+    filename: str
+        path to filename to encrypt.
+
+    new_keys: bool (default: False)
+        creates new AES key if True, otherwise expects it from
+        AES_KEY environment variable.
+    '''
+
     if not os.path.isfile(filename):
         exit('File doesn\'t exist: %s' % (filename))
 
-    if params.new:
+    if new_keys:
         aes_key = get_random_string(KEY_LENGTH)
         aes_key += b'-' + get_random_string(IV_LENGTH)
 
@@ -90,6 +101,27 @@ def encrypt_file(params):
 
 
 def decrypt_file(filename, write_to_file=True, is_ciphertext=False):
+    '''
+    decrypts file.
+
+    params
+    ------
+    filename: str
+        path to filename to decrypt.
+
+    write_to_file: bool (default: True)
+        writes decrypted content to '_' + filename if True.
+        Otherwise, prints to std.
+
+    is_ciphertext: bool (default: False)
+        skips reading filename and consider it a text string
+        if True, otherwise reads file. 
+
+    returns
+    -------
+    str
+        if write_to_file is False
+    '''
 
     if not os.environ.get('AES_KEY'):
         exit('`AES_KEY` doesn\'t exist in environment variables.')
@@ -109,7 +141,11 @@ def decrypt_file(filename, write_to_file=True, is_ciphertext=False):
         backend=default_backend())
 
     decryptor = cipher.decryptor()
-    content = decryptor.update(ciphertext) + decryptor.finalize()
+    try:
+        content = decryptor.update(ciphertext) + decryptor.finalize()
+    except ValueError as exc:
+        exit('ValueError: %s\n' % (str(exc)))
+
     content = adjust_padding(content, KEY_LENGTH, unpad=True)
 
     if write_to_file and not is_ciphertext:
@@ -125,10 +161,6 @@ def main():
     params = define_params()
 
     if params.e:
-        encrypt_file(params)
+        encrypt_file(params.file, params.new)
     elif params.d:
         decrypt_file(params.file)
-
-
-if __name__ == "__main__":
-    main()
