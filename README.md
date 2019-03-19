@@ -1,16 +1,17 @@
 # Installation
-Download either the source code or .whl file from latest release and install using pip or python.
+You can grab the latest .whl file from repository and install it via pip or just simply type:
 ```
-pip install ebryx-x.x-py3-none-any.whl
+pip install ebryx
 ```
 If you want build from source code, then.
 ```
-cd /path/to/repo/code/
+git clone https://github.com/EbryxLabs/ebryx
+cd ebryx/
 python setup.py install
 ```
 You will have a package named **`ebryx`** installed for your python.
 
-## Encryption / Decryption
+# Encryption / Decryption
 You can encrypt / decrypt data using `ebcrypt` tool. **(AES-256 Encryption)**
 
 For example, to encrypt you can do following:
@@ -33,7 +34,7 @@ You can get detailed help on crypto tool by typing.
 ebcrypt -h
 ```
 
-### OpenSSL compatibility
+## OpenSSL compatibility
 Encryption done by openssl utility can be decrypted by `ebcrypt` utility and vice versa. For example, you can encrypt using openssl as follows.
 ```
 openssl aes-256-cbc -a -e -K <hex-key> -iv <hex-iv> -in <input-file> -out <output-file>
@@ -46,7 +47,7 @@ ebcrypt <encrypted-file> -d
 ```
 Similarly, you can encrypt using `ebcrypt` and decrypt the content using openssl, given that you're using the same keys.
 
-## Code Usage
+# Code Usage
 You can also use it in your own code by importing the appropriate module.
 ```
 # import main module.

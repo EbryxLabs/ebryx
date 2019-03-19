@@ -13,12 +13,13 @@ with open("README.md", "r") as fh:
 
 setup(
     name='ebryx',
-    packages=['crypto'],
+    packages=['ebryx', 'ebryx.crypto'],
     entry_points={
         'console_scripts': ['ebcrypt = ebryx.crypto._crypto:main'],
     },
     version=version,
-    description='A simple utility to encrypt / decrypt text files.',
+    url='https://github.com/EbryxLabs/ebryx',
+    description='Official library for Ebryx LLC.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Rana Awais',
